@@ -3,14 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Context
 {
-    public class BookContext : DbContext
+    public class PhoneBookContext : DbContext
     {
-        public BookContext(DbContextOptions<BookContext> options) : base(options) { }
+        public PhoneBookContext(DbContextOptions<PhoneBookContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
                 .Property(u => u.Username)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Email)
                 .IsRequired();
 
             modelBuilder.Entity<User>()
