@@ -4,6 +4,7 @@ using Business.Mappers;
 using Businesss.Options;
 using Data.Context;
 using Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -44,10 +45,19 @@ namespace Business.Services
             return null;
         }
 
-        public bool Exists(LoginRequestDto request)
+        public bool UsernameMatchesPass(LoginRequestDto request)
         {
             return GetUser(request) != null;
         }
+
+        public bool CredentialsExist(UserRequestDto request)
+        {
+            var username = _context.Users.FirstOrDefault(u => u.Username == request.Username);
+            var password = _context.Users.FirstOrDefault(u => u.Password == request.Password);
+
+            return (username != null || password != null) ;
+        }
+
         public async Task<UserResultDto> Create(UserRequestDto request)
         {
             // TODO: encrypt password ig? or do it in front?
@@ -57,6 +67,49 @@ namespace Business.Services
             await _context.SaveChangesAsync();
 
             return _mapper.EntityToDetailedDto(createdUser.Entity);
+        }
+
+        public async Task<bool> KeyExists(int key)
+        {
+            return await _context.Users.FindAsync(key) != null;
+        }
+
+        public IEnumerable<UserDetailedResultDto> GetUsersOfSharedEntry(int entryKey, int ownerKey)
+        {
+            var users = _context.UserEntries
+                .Where(ue => ue.EntryId == entryKey && ue.UserId != ownerKey)
+                .Include(ue => ue.User)
+                .ToList();
+
+            var userDtos = new List<UserDetailedResultDto>();
+            foreach (var u in users)
+                userDtos.Add(_mapper.EntityToDetailedDto(u.User));
+
+            return userDtos;
+        }
+
+        public async Task Delete(int key)
+        {
+            var ownedEntries = await _context.Entries
+                .Where(e => e.OwnerId == key)
+                .Include(e => e.UserEntries)
+                .ToListAsync();
+
+            foreach (var e in ownedEntries)
+                _context.RemoveRange(e.UserEntries);
+
+            _context.Entries.RemoveRange(ownedEntries);
+
+            var foreignEntries = await _context.UserEntries
+                .Where(ue => ue.UserId == key)
+                .ToListAsync();
+
+            _context.UserEntries.RemoveRange(foreignEntries);
+
+            var user = await _context.Users.FindAsync(key);
+            _context.Users.Remove(user);
+
+            await _context.SaveChangesAsync();
         }
 
         private User GetUser(LoginRequestDto request)
@@ -88,7 +141,5 @@ namespace Business.Services
 
             return tokenHandler.WriteToken(token);
         }
-
-
     }
 }

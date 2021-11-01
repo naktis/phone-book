@@ -4,5 +4,8 @@ using Data.Models;
 
 namespace Business.Mappers
 {
-    public interface IEntryMapper : IMapper<Entry, EntryRequestDto, EntryDetailedResultDto, EntryResultDto> { }
+    public interface IEntryMapper : IMapper<Entry, EntryRequestDto, EntryDetailedResultDto, EntryResultDto>
+    {
+        Entry CopyFromDto(Entry entry, EntryRequestDto newEntry);
+    }
 }

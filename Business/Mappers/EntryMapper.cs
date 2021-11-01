@@ -35,5 +35,13 @@ namespace Business.Mappers
                 OwnerUsername = entry.Owner.Username
             };
         }
+
+        public Entry CopyFromDto(Entry entry, EntryRequestDto newEntry)
+        {
+            entry.Name = newEntry.Name;
+            entry.Phone = newEntry.Phone;
+
+            return entry;
+        }
     }
 }
