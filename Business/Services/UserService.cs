@@ -1,4 +1,5 @@
-﻿using Business.Dto;
+﻿using Business.Dto.Requests;
+using Business.Dto.Results;
 using Business.Mappers;
 using Businesss.Options;
 using Data.Context;
@@ -15,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace Business.Services
 {
-    public class AccountService : IUserService
+    public class UserService : IUserService
     {
         private readonly PhoneBookContext _context;
-        private readonly IAccountMapper _mapper;
+        private readonly IUserMapper _mapper;
         private readonly AccountOptions _options;
 
-        public AccountService(PhoneBookContext context, IAccountMapper mapper, 
+        public UserService(PhoneBookContext context, IUserMapper mapper, 
             IOptions<AccountOptions> options)
         {
             _context = context;
@@ -29,13 +30,13 @@ namespace Business.Services
             _options = options.Value;
         }
 
-        public UserResultDto Authenticate(LoginRequestDto request)
+        public LoginResultDto Authenticate(LoginRequestDto request)
         {
             var user = GetUser(request);
 
             if (user != null)
             {
-                var userDto = _mapper.EntityToDto(user);
+                var userDto = _mapper.EntityToLoginDto(user);
                 userDto.Token = GenerateJwtToken(userDto);
                 return userDto;
             }
@@ -55,7 +56,7 @@ namespace Business.Services
             var createdUser = await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            return _mapper.EntityToDto(createdUser.Entity);
+            return _mapper.EntityToDetailedDto(createdUser.Entity);
         }
 
         private User GetUser(LoginRequestDto request)
@@ -63,14 +64,14 @@ namespace Business.Services
             return _context.Users.FirstOrDefault(u => u.Email == request.Email && u.Password == request.Password);
         }
 
-        private string GenerateJwtToken(UserResultDto user)
+        private string GenerateJwtToken(UserDetailedResultDto user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_options.Secret);
 
             var claims = new List<Claim>
             {
-                new Claim("id", user.Id.ToString()),
+                new Claim("id", user.UserId.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
             };
 

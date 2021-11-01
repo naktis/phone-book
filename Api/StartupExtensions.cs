@@ -1,10 +1,8 @@
-﻿using Business.Mappers;
+﻿using Api.RequestProcessors.DefaultSetters;
+using Api.RequestProcessors.TokenExtractors;
+using Business.Mappers;
 using Business.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api
 {
@@ -12,8 +10,15 @@ namespace Api
     {
         public static IServiceCollection ConfigureDependencyInjection(this IServiceCollection services)
         {
-            services.AddTransient<IUserService, AccountService>();
-            services.AddTransient<IAccountMapper, AccountMapper>();
+            services.AddTransient<IEntryParamsSetter, EntryParamsSetter>();
+            services.AddTransient<IClaimExtractor, ClaimExtractor>();
+
+            services.AddTransient<IUserMapper, UserMapper>();
+            services.AddTransient<IEntryMapper, EntryMapper>();
+
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IEntryService, EntryService>();
+
             return services;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Business.Dto;
+﻿using Business.Dto.Requests;
+using Business.Dto.Results;
 using System.Threading.Tasks;
 
 namespace Business.Services
@@ -6,7 +7,7 @@ namespace Business.Services
     public interface IUserService
     {
         public bool Exists(LoginRequestDto request);
-        public UserResultDto Authenticate(LoginRequestDto request);
+        public LoginResultDto Authenticate(LoginRequestDto request);
         Task<UserResultDto> Create(UserRequestDto request);
     }
 }
