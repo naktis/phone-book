@@ -39,6 +39,13 @@ namespace Api
 
             services.ConfigureDependencyInjection();
 
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.Configure<AccountOptions>(Configuration.GetSection("Account"));
 
             var tokenValidationParameters = new TokenValidationParameters
@@ -111,6 +118,8 @@ namespace Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Phone Book v1"));
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 
