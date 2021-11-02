@@ -77,7 +77,7 @@ class LoginPage extends React.Component {
 	render() {
 		return(
 			<GenericPage>
-				<h2>Login to your account</h2>
+				<h2>Log in to your account</h2>
 
 				<label>Email address</label>
 				<input 
@@ -97,7 +97,7 @@ class LoginPage extends React.Component {
 				/>
 				<ValidationError>{this.state.errors["password"]}</ValidationError>
 
-				<input type="submit" value="Login" onClick={ this.collectData.bind(this) }/>
+				<input type="submit" value="LOG IN" onClick={ this.collectData.bind(this) }/>
 				<ServerError>{this.state.mismatchMessage}</ServerError>
 			</GenericPage>
 		)

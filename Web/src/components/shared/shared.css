@@ -6,10 +6,35 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  min-height: 55px;
 }
 
 .header h1 {
   margin: 0;
+  margin-top: 5px;
+}
+
+.user-data-div {
+  text-align: right;
+  color: white;
+}
+
+.user-data-div * {
+  margin: 0;
+}
+
+.header-data-div {
+  display: flex;
+}
+
+.header-data-div img {
+  max-width: 50px;
+  padding-left: 20px;
+}
+
+.header-data-div img:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }
 
 .generic-page {
@@ -31,6 +56,15 @@
   gap: 5px;
   font-size: large;
   border-radius: 3px;
+  min-width: 200px;
+}
+
+.generic-content p {
+  margin: 5px 0px 0pc 0px;
+}
+
+.generic-content h3 {
+  margin: 20px 0px 0pc 0px;
 }
 
 .generic-page h2 {
