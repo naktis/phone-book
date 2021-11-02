@@ -3,6 +3,8 @@ import axios from "axios";
 import GenericPage from "../shared/genericPage";
 import ValidationError from "../shared/messages/validationError";
 import ServerError from "../shared/messages/serverError";
+import { Link } from "react-router-dom";
+import "./user.css";
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -99,6 +101,10 @@ class LoginPage extends React.Component {
 
 				<input type="submit" value="LOG IN" onClick={ this.collectData.bind(this) }/>
 				<ServerError>{this.state.mismatchMessage}</ServerError>
+
+				<Link to="/register">
+					<div className="link">Don't have an account? Register here</div>
+				</Link>
 			</GenericPage>
 		)
 	}

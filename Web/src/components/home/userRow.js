@@ -24,7 +24,7 @@ class UserRow extends React.Component {
 
     axios.delete(`https://localhost:5001/api/Entry/Share/${this.props.entry.entryId}/${this.props.user.userId}`, config).then(function(response) {
       _this.setState({
-        successMessage: `Entry sharing with ${_this.props.user.name} has been terminated`
+        successMessage: `Entry sharing has been terminated`
       })
       }).catch((error) => {
         console.log(error);

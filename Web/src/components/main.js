@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from './home/homePage';
 import LoginPage from './user/loginPage';
+import RegisterPage from './user/registerPage';
 
 const Main = (props) => {
   return (
@@ -15,6 +16,7 @@ const Main = (props) => {
           handleLogin={props.handleLogin}
         />} 
       />
+      <Route exact path='/register' component={RegisterPage}></Route>
     </Switch>
   );
 }

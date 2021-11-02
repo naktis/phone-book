@@ -5,12 +5,14 @@ import UserRow from "./userRow";
 import SuccessMessage from "../shared/messages/successMessage";
 import ValidationError from "../shared/messages/validationError";
 import ServerError from "../shared/messages/serverError";
+import EditForm from "./editForm";
 
 class EntryRow extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       showShared: false,
+      showEditMode: false,
       users: [],
       successMessage: "",
       name: "",
@@ -36,7 +38,10 @@ class EntryRow extends React.Component {
         console.log(error);
     })
 
-    this.setState({showShared: !this.state.showShared})
+    this.setState({
+      showShared: !this.state.showShared,
+      newUserSuccessMessage: ""
+    })
   }
 
   handleDelete() {
@@ -132,7 +137,11 @@ class EntryRow extends React.Component {
                 alt="share" 
                 onClick={this.handleShowUsers.bind(this)}
               />
-              <img src="./icons/edit.png" alt="edit"/>
+              <img 
+                src="./icons/edit.png" 
+                alt="edit"
+                onClick={() => this.setState({ showEditMode: !this.state.showEditMode })}
+              />
               <img 
                 src="./icons/delete.png" 
                 alt="delete"
@@ -142,6 +151,7 @@ class EntryRow extends React.Component {
             }
           </div>
         </div>
+
         {this.state.showShared ? 
           <div>
             <div className="shared-users-header">Share entry with another user</div>
@@ -153,7 +163,7 @@ class EntryRow extends React.Component {
                 onChange={this.handleNameChange.bind(this)}
                 maxLength="30"
               />
-              <input type="submit" value="CREATE" onClick={ this.collectData.bind(this) }/>
+              <input type="submit" value="SHARE" onClick={ this.collectData.bind(this) }/>
             </div>
             <ServerError>{this.state.serverErrorMessage}</ServerError>
             <SuccessMessage>{this.state.newUserSuccessMessage}</SuccessMessage>
@@ -165,6 +175,12 @@ class EntryRow extends React.Component {
               return (<UserRow entry={this.props.entry} key={user.userId} owner={this.props.user} user={user} />
             )}, this) }</div>
           </div>
+        : null}
+
+        {this.state.showEditMode ? 
+        <div>
+          <EditForm user={this.props.user} entry={this.props.entry}></EditForm>
+        </div> 
         : null}
       </div>
 )}
