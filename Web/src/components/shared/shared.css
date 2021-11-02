@@ -1,0 +1,108 @@
+.header {
+  background-color: #2b4560;
+  color: white;
+  top: 0;
+  padding: 20px 20px 20px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-height: 55px;
+}
+
+.header h1 {
+  margin: 0;
+  margin-top: 5px;
+}
+
+.user-data-div {
+  text-align: right;
+  color: white;
+}
+
+.user-data-div * {
+  margin: 0;
+}
+
+.header-data-div {
+  display: flex;
+}
+
+.header-data-div img {
+  max-width: 50px;
+  padding-left: 20px;
+}
+
+.header-data-div img:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.generic-page {
+  background-color: #e1e7e0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 50px;
+}
+
+.generic-content {
+  margin: 20px 0px 20px 0px;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+  padding: 0px 30px 10px 30px;
+  color: #2f5061;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  gap: 5px;
+  font-size: large;
+  border-radius: 3px;
+  width: 400px;
+}
+
+.generic-content p {
+  margin: 5px 0px 0pc 0px;
+}
+
+.generic-content h3 {
+  margin: 20px 0px 0pc 0px;
+}
+
+.generic-page h2 {
+  text-align: center;
+}
+
+.generic-page input[type="submit"] {
+  margin-top: 20px;
+  height: 35px;
+  background-color: #6aa4b0;
+  border-radius: 5px;
+  color: white;
+}
+
+.generic-page input[type="submit"]:hover {
+  cursor: pointer;
+  background-color: #527d86;
+}
+
+.generic-page input[type="text"],
+.generic-page input[type="password"] {
+  padding: 10px 0px 10px 10px;
+  font-size: medium;
+}
+
+.server-error,
+.validation-error {
+  color: red;
+  font-size: medium;
+}
+
+.server-error {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.success-message {
+  color: green;
+  font-size: medium;
+}
