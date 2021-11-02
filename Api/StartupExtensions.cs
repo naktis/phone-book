@@ -24,6 +24,7 @@ namespace Api
             services.AddTransient<IUserMapper, UserMapper>();
             services.AddTransient<IEntryMapper, EntryMapper>();
 
+            services.AddTransient<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEntryService, EntryService>();
 

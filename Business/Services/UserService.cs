@@ -1,7 +1,7 @@
 ﻿using Business.Dto.Requests;
 using Business.Dto.Results;
 using Business.Mappers;
-using Businesss.Options;
+using Business.Options;
 using Data.Context;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +22,15 @@ namespace Business.Services
         private readonly PhoneBookContext _context;
         private readonly IUserMapper _mapper;
         private readonly AccountOptions _options;
+        private readonly IPasswordHasher _hasher;
 
         public UserService(PhoneBookContext context, IUserMapper mapper, 
-            IOptions<AccountOptions> options)
+            IOptions<AccountOptions> options, IPasswordHasher hasher)
         {
             _context = context;
             _mapper = mapper;
             _options = options.Value;
+            _hasher = hasher;
         }
 
         public async Task<LoginResultDto> Authenticate(LoginRequestDto request)
@@ -53,14 +55,14 @@ namespace Business.Services
         public async Task<bool> CredentialsExist(UserRequestDto request)
         {
             var username = await GetUserByUsername(request.Username);
-            var password = await _context.Users.FirstOrDefaultAsync(u => u.Password == request.Password);
+            var email = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
-            return (username != null || password != null) ;
+            return (username != null || email != null);
         }
 
         public async Task<UserResultDto> Create(UserRequestDto request)
         {
-            // TODO: encrypt password ig? or do it in front?
+            request.Password = _hasher.Hash(request.Password);
             var user = _mapper.DtoToEntity(request);
 
             var createdUser = await _context.Users.AddAsync(user);
@@ -129,7 +131,15 @@ namespace Business.Services
 
         private async Task<User> GetUserByEmailPassword(LoginRequestDto request)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email && u.Password == request.Password);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (user != null)
+            {
+                if (_hasher.Check(user.Password, request.Password))
+                    return user;
+            }
+            
+            return null;
         }
 
         private string GenerateJwtToken(UserDetailedResultDto user)
