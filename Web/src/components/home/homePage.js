@@ -138,11 +138,25 @@ class HomePage extends React.Component {
 
 		return this.props.location.user;
 	}
+
+  handleRefreshButtonClick() {
+    this.refreshEntries(this.state.paging.currentPage);
+  }
 	
 	render() {
 		return(
 			<GenericPage>
-				{this.props.location.user === undefined ? <Redirect to="/login" /> : <h2>Your contacts</h2>}
+				{this.props.location.user === undefined ? 
+          <Redirect to="/login" /> : 
+          <div className="home-header">
+            <h2>Your contacts</h2>
+            <img 
+              src="./icons/refresh.png"
+              alt="refresh"
+              onClick={this.handleRefreshButtonClick.bind(this)}
+            />
+          </div>
+        }
 				{this.state.entries.length === 0 ? <p>You don't have any contacts yet.</p> :
 				<div>
 					{ this.state.entries.map(function (entry){

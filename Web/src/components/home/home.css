@@ -106,10 +106,17 @@
   font-size: medium;
   align-items: center;
   gap: 10px;
+  transition: 0.3s;
 }
 
 .user-row img {
   max-height: 15px;
+  padding-left: 2px;
+}
+
+.user-row img:hover {
+  cursor: pointer;
+  background-color: rgba(185, 47, 29, 0.466);
 }
 
 .shared-username {
@@ -136,4 +143,45 @@
   text-decoration: underline;
   width: fit-content;
   margin-bottom: 10px;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.home-header img {
+  max-height: 20px;
+}
+
+.home-header img:hover {
+  cursor: pointer;
+}
+
+.home-header h2 {
+  padding-bottom: 5px;
+}
+
+.share-new-div {
+  display: flex;
+  justify-content: space-between;
+  font-size: medium;
+  align-items: center;
+}
+
+.share-new-div input[type="text"] {
+  font-size: medium;
+  height: 25px;
+  padding: 0;
+  padding-left: 5px;
+}
+
+.share-new-div input[type="submit"] {
+  margin: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: small;
+  height: 30px;
 }

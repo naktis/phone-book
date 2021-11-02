@@ -10,6 +10,8 @@ namespace Api.RequestProcessors.Validators
         public readonly int MaxEmailLength = 30;
         public readonly int MinPassLength = 8;
         public readonly int MaxPassLength = 30;
+        public readonly int MinNameLength = 3;
+        public readonly int MaxNameLength = 20;
         public readonly ISharedValidator _sharedValidator;
 
         public UserValidator(ISharedValidator sharedValidator)
@@ -31,7 +33,8 @@ namespace Api.RequestProcessors.Validators
 
         public bool ValidateUsername(string username)
         {
-            return username.All(u => char.IsLetterOrDigit(u));
+            return username.All(u => char.IsLetterOrDigit(u)) &&
+                   _sharedValidator.TextLengthValid(username, MaxNameLength, MinNameLength);
         }
 
         private bool ValidatePassword(string password)

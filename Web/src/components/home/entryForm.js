@@ -72,7 +72,7 @@ class EntryFrom extends React.Component {
     .then(function (response) {
       console.log(response);
       _this.setState({ 
-        successMessage: "Entry has been added successfully.",
+        successMessage: "Entry has been added successfully. Please refresh contacts.",
         fields: {
           name: "",
           phone: ""
