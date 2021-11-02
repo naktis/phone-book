@@ -4,6 +4,8 @@ import axios from "axios";
 import { Redirect } from 'react-router-dom';
 import EntryRow from "./entryRow";
 import './home.css'
+import EntryFrom from "./entryForm";
+import AccountSettings from "./accountSettings";
 
 class HomePage extends React.Component {
 	constructor(props) {
@@ -11,6 +13,7 @@ class HomePage extends React.Component {
 
 		this.state = {
 			entries: [],
+			token: "",
 			paging: {
         currentPage: 1,
         nextEntries: [],
@@ -30,6 +33,9 @@ class HomePage extends React.Component {
 
 	componentDidMount() {
 		const _this = this;
+
+		if(this.props.location.user === undefined)
+			return;
 
 		const config = {
 			headers: { Authorization: `Bearer ${this.props.location.user.token}` }
@@ -125,6 +131,13 @@ class HomePage extends React.Component {
     }
     _this.setState({ paging: paging})
   }
+
+	getUser() {
+		if (this.props.location.user === undefined)
+			return { user: { userId: 0, username: "", email: ""}}
+
+		return this.props.location.user;
+	}
 	
 	render() {
 		return(
@@ -133,7 +146,7 @@ class HomePage extends React.Component {
 				{this.state.entries.length === 0 ? <p>You don't have any contacts yet.</p> :
 				<div>
 					{ this.state.entries.map(function (entry){
-								return (<EntryRow entry={entry} key={entry.entryId} user={this.props.location.user} />
+							return (<EntryRow entry={entry} key={entry.entryId} user={this.getUser.bind(this)()} />
 					)}, this) }
 				
 				<div className="paging-div">
@@ -153,6 +166,8 @@ class HomePage extends React.Component {
         </div>
 				</div>
 				}
+				<EntryFrom user={this.props.location.user}/>
+				<AccountSettings user={this.props.location.user}/>
 			</GenericPage>
 		)
 	}

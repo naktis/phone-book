@@ -1,17 +1,25 @@
 .entry-row {
   display: flex;
-  transition: 0.3s;
-  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
-  margin: 5px 0px 0px 0px;
-  padding: 0px 10px 5px 10px;
   gap: 70px;
 }
 
-.entry-row:hover {
+.entry-row-container {
+  transition: 0.3s;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
+  margin: 5px 0px 0px 0px;
+  padding: 10px 10px 10px 10px;
+}
+
+.entry-row-container:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .entry-row-button-div {
+  display: flex;
+  align-items: center;
+}
+
+.entry-row-button-div div {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -32,7 +40,7 @@
 
 .paging-div {
   margin-top: 20px;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,4 +79,61 @@
 
 .disabled-button:hover {
   cursor: default;
+}
+
+.entry-name {
+  font-weight: bold;
+}
+
+.entry-row-data-div a {
+  text-decoration: none;
+}
+
+.shared-text {
+  font-size: medium;
+  padding-bottom: 5px;
+}
+
+.shared-users-header {
+  font-size: small;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.user-row {
+  display: flex;
+  font-size: medium;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-row img {
+  max-height: 15px;
+}
+
+.shared-username {
+  padding-bottom: 5px;
+}
+
+.entry-form,
+.account-settings {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+
+.entry-form input[type="submit"] {
+  background-color: #2f6d80;
+}
+
+.account-settings p {
+  cursor: pointer;
+  color: rgb(104, 18, 18);
+  text-decoration: underline;
+  width: fit-content;
+  margin-bottom: 10px;
 }

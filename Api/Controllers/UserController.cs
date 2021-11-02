@@ -38,18 +38,18 @@ namespace Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        public ActionResult<LoginResultDto> Login([FromBody] LoginRequestDto request)
+        public async Task<ActionResult<LoginResultDto>> Login([FromBody] LoginRequestDto request)
         {
             if (!_userValidator.ValidateLogin(request))
                 return BadRequest();
 
-            if (!_userService.UsernameMatchesPass(request)) {
-                _logger.LogInformation($"Login denied for email address {request.Email}");
+            if (!await _userService.UsernameMatchesPass(request)) {
+                _logger.LogInformation($"Log in denied for email address {request.Email}");
                 return NotFound();
             }
 
-            var result = _userService.Authenticate(request);
-            _logger.LogInformation($"Login accepted for email address {request.Email}");
+            var result = await _userService.Authenticate(request);
+            _logger.LogInformation($"Log in accepted for user with id = {result.UserId}");
             return Ok(result);
         }
 
@@ -58,11 +58,11 @@ namespace Api.Controllers
         public async Task<ActionResult<UserDetailedResultDto>> PostUser([FromBody] UserRequestDto request)
         {
             if (!_userValidator.Validate(request) ||
-                _userService.CredentialsExist(request))
+                await _userService.CredentialsExist(request))
                 return BadRequest();
 
             var user = await _userService.Create(request);
-            _logger.LogInformation($"User with id {user.UserId} has been added");
+            _logger.LogInformation($"User with id = {user.UserId} has been added");
             return CreatedAtRoute(nameof(PostUser), user);
         }
         
@@ -92,7 +92,7 @@ namespace Api.Controllers
 
             await _userService.Delete(userKey);
 
-            _logger.LogInformation($"User with id={userKey} has been deleted");
+            _logger.LogInformation($"User with id = {userKey} has been deleted");
             return Ok();
         }
     }

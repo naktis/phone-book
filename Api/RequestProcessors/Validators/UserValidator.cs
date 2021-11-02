@@ -19,31 +19,31 @@ namespace Api.RequestProcessors.Validators
 
         public bool ValidateLogin(LoginRequestDto request)
         {
-            return EmailValid(request.Email) && PasswordValid(request.Password);
+            return ValidateEmail(request.Email) && ValidatePassword(request.Password);
         }
 
         public bool Validate(UserRequestDto request)
         {
-            return EmailValid(request.Email) && 
-                   PasswordValid(request.Password) &&
-                   UsernameValid(request.Username);
+            return ValidateEmail(request.Email) && 
+                   ValidatePassword(request.Password) &&
+                   ValidateUsername(request.Username);
         }
 
-        private bool PasswordValid(string password)
+        public bool ValidateUsername(string username)
+        {
+            return username.All(u => char.IsLetterOrDigit(u));
+        }
+
+        private bool ValidatePassword(string password)
         {
             return _sharedValidator.TextLengthValid(password, MaxPassLength, MinPassLength);
         }
 
-        private bool EmailValid(string email)
+        private bool ValidateEmail(string email)
         {
             return _sharedValidator.TextLengthValid(email, MaxEmailLength, MinEmailLength) &&
                    email.Contains('@') &&
                    email.Contains('.');
-        }
-
-        private bool UsernameValid(string username)
-        {
-            return username.All(u => char.IsLetterOrDigit(u));
         }
     }
 }

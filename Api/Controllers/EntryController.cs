@@ -26,12 +26,13 @@ namespace Api.Controllers
         private readonly IKeyValidator _keyValidator;
         private readonly IEntryParamsValidator _paramsValidator;
         private readonly IEntryValidator _entryValidator;
+        private readonly IUserValidator _userValidator;
 
         public EntryController(IEntryParamsSetter defaultSetter, 
             IClaimExtractor extractor, IEntryService entryService, 
             ILogger<EntryController> logger, IKeyValidator keyValidator, 
             IEntryParamsValidator paramsValidator, IEntryValidator entryValidator,
-            IUserService userService)
+            IUserService userService, IUserValidator userValidator)
         {
             _defaultSetter = defaultSetter;
             _extractor = extractor;
@@ -41,6 +42,7 @@ namespace Api.Controllers
             _paramsValidator = paramsValidator;
             _entryValidator = entryValidator;
             _userService = userService;
+            _userValidator = userValidator;
         }
 
         [HttpGet("{key}")]
@@ -88,12 +90,14 @@ namespace Api.Controllers
         }
 
         [HttpPost("Share", Name = nameof(ShareEntry))]
-        public async Task<ActionResult> ShareEntry(int entryKey, int receiverKey)
+        public async Task<ActionResult> ShareEntry(int entryKey, string receiverUsername)
         {
-            if (!_keyValidator.Validate(entryKey) || !_keyValidator.Validate(receiverKey))
+            if (!_keyValidator.Validate(entryKey) || !_userValidator.ValidateUsername(receiverUsername))
                 return BadRequest();
 
-            if (!await _entryService.KeyExists(entryKey) || !await _userService.KeyExists(receiverKey))
+            var receiverKey = await _userService.GetUserIdByUsername(receiverUsername);
+
+            if (!await _entryService.KeyExists(entryKey) || receiverKey == 0)
                 return NotFound();
 
             var senderKey = _extractor.GetUserId(HttpContext.User.Identity as ClaimsIdentity);

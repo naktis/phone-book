@@ -31,9 +31,9 @@ namespace Business.Services
             _options = options.Value;
         }
 
-        public LoginResultDto Authenticate(LoginRequestDto request)
+        public async Task<LoginResultDto> Authenticate(LoginRequestDto request)
         {
-            var user = GetUser(request);
+            var user = await GetUserByEmailPassword(request);
 
             if (user != null)
             {
@@ -45,15 +45,15 @@ namespace Business.Services
             return null;
         }
 
-        public bool UsernameMatchesPass(LoginRequestDto request)
+        public async Task<bool> UsernameMatchesPass(LoginRequestDto request)
         {
-            return GetUser(request) != null;
+            return await GetUserByEmailPassword(request) != null;
         }
 
-        public bool CredentialsExist(UserRequestDto request)
+        public async Task<bool> CredentialsExist(UserRequestDto request)
         {
-            var username = _context.Users.FirstOrDefault(u => u.Username == request.Username);
-            var password = _context.Users.FirstOrDefault(u => u.Password == request.Password);
+            var username = await GetUserByUsername(request.Username);
+            var password = await _context.Users.FirstOrDefaultAsync(u => u.Password == request.Password);
 
             return (username != null || password != null) ;
         }
@@ -112,9 +112,24 @@ namespace Business.Services
             await _context.SaveChangesAsync();
         }
 
-        private User GetUser(LoginRequestDto request)
+        public async Task<int> GetUserIdByUsername(string username)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == request.Email && u.Password == request.Password);
+            var user = await GetUserByUsername(username);
+
+            if (user != null)
+                return user.UserId;
+
+            return 0;
+        }
+
+        private async Task<User> GetUserByUsername(string username)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        }
+
+        private async Task<User> GetUserByEmailPassword(LoginRequestDto request)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email && u.Password == request.Password);
         }
 
         private string GenerateJwtToken(UserDetailedResultDto user)
@@ -141,5 +156,6 @@ namespace Business.Services
 
             return tokenHandler.WriteToken(token);
         }
+
     }
 }
