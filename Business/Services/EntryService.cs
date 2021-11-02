@@ -70,6 +70,7 @@ namespace Business.Services
                 .Where(ue => ue.UserId == userId)
                 .Include(ue => ue.Entry)
                 .ThenInclude(e => e.Owner)
+                .OrderByDescending(e => e.EntryId) 
                 .Skip((entryParams.PageNumber - 1) * entryParams.PageSize)
                 .Take(entryParams.PageSize)
                 .ToList();

@@ -13,7 +13,7 @@ class Header extends React.Component {
 							</div>
 							{ this.props.loggedIn ? 
 								<Link to="./">
-									<img src="./logout.png" onClick={this.props.handleLogout}></img>
+									<img src="./icons/logout.png" onClick={this.props.handleLogout} alt="login"></img>
 								</Link>
 							 : null }
 							

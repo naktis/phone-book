@@ -1,0 +1,74 @@
+.entry-row {
+  display: flex;
+  transition: 0.3s;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
+  margin: 5px 0px 0px 0px;
+  padding: 0px 10px 5px 10px;
+  gap: 70px;
+}
+
+.entry-row:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.entry-row-button-div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.entry-row-data-div {
+  flex: 5;
+}
+
+.entry-row-button-div img {
+  max-height: 25px;
+}
+
+.entry-row-button-div img:hover {
+  cursor: pointer;
+  background-color: aliceblue;
+}
+
+.paging-div {
+  margin-top: 20px;
+  padding-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.paging-div * {
+  background-color: #2f6d80;
+  border-radius: 30px;
+}
+
+.paging-div div {
+  width: 30px;
+  padding: 10px 10px 10px 10px;
+  background-color: white;
+  color: black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.paging-div button {
+  font-size: medium;
+  font-weight: bolder;
+  width: 60px;
+  color: white;
+  box-shadow: 1px 4px 8px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.disabled-button {
+  background-color: #2f6d8069;
+  color: white;
+  border-width: 1px;
+}
+
+.disabled-button:hover {
+  cursor: default;
+}
